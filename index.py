@@ -1,9 +1,13 @@
 import os
-import base64
 import json
+import base64
 import requests
-from PIL import Image
 import io
+from PIL import Image
+
+# OpenAI API Configuration
+OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
+OPENAI_API_URL = "https://api.openai.com/v1/chat/completions"
 
 def encode_image(image_base64):
     """Process base64 image, resize to 512x512, and re-encode to base64."""
@@ -31,25 +35,63 @@ def encode_image(image_base64):
     except Exception as e:
         raise ValueError(f"Error processing image: {str(e)}")
 
-def main(req, res):
-    """Analyze clothing items using GPT-4 Vision API in an Appwrite Function."""
-    # Fetch OpenAI API Key
-    api_key = os.getenv('OPENAI_API_KEY')
-    if not api_key:
-        return res.json({'error': 'OPENAI_API_KEY not found in environment variables'}, 500)
+def main(context):
+    """
+    Analyze clothing items using GPT-4 Vision API.
     
-    # Get request data from Appwrite function input
+    Args:
+        context: The Appwrite function context containing request data.
+    
+    Returns:
+        JSON response with clothing analysis results.
+    """
+    print("\nStarting GPT-4 Vision processing.\n")
+    
     try:
-        data = json.loads(os.getenv("APPWRITE_FUNCTION_DATA", "{}"))
-        if not data or 'images' not in data:
-            return res.json({'error': 'No images provided in request body'}, 400)
+        print("Extracting request context...")
         
-        base64_images = data['images']
-        if not isinstance(base64_images, list):
-            base64_images = [base64_images]
+        # Debug context structure
+        print(f"Context type: {type(context)}")
+        print(f"Context dir: {dir(context)}")
+        print(f"Request object: {context.req}")
+        print(f"Request dir: {dir(context.req)}")
+        
+        # Get request body
+        body_str = context.req.body
+        print(f"Raw body: {body_str}")
+        
+        try:
+            body_data = json.loads(body_str)
+            images = body_data.get('images', [])
+            print(f"Parsed JSON: {body_data}")
+        except (json.JSONDecodeError, TypeError):
+            print("Failed to parse body as JSON")
+            return context.res.json({
+                "success": False,
+                "message": "Invalid JSON format in request body"
+            })
+        
+        if not images:
+            return context.res.json({
+                "success": False,
+                "message": "No images provided"
+            })
+        
+        if not isinstance(images, list):
+            images = [images]  # Ensure it's always a list
+        
+        print(f"Received {len(images)} images for processing.")
+        
+        # Ensure API key exists
+        if not OPENAI_API_KEY:
+            print("Missing OpenAI API Key")
+            return context.res.json({
+                "success": False,
+                "message": "OPENAI_API_KEY is missing from environment variables"
+            })
 
-        # Process and resize images
-        processed_images = [encode_image(img) for img in base64_images]
+        # Process images
+        processed_images = [encode_image(img) for img in images]
 
         system_prompt = """You are a fashion expert analyzing clothing items in images.
         For each item, identify:
@@ -70,10 +112,10 @@ def main(req, res):
             "extra_details": "",
             "confidence": 0.0
         }
-        
+
         Return results in the same order as provided images. Never use 'unknown' - suggest alternatives instead."""
 
-        # Construct API request content
+        # Construct API request payload
         content = [{"type": "text", "text": f"Analyze {len(processed_images)} clothing items and return structured JSON."}]
         for base64_image in processed_images:
             content.append({
@@ -81,10 +123,9 @@ def main(req, res):
                 "image_url": {"url": f"data:image/jpeg;base64,{base64_image}"}
             })
 
-        # OpenAI GPT-4 Vision API Call
         headers = {
             "Content-Type": "application/json",
-            "Authorization": f"Bearer {api_key}"
+            "Authorization": f"Bearer {OPENAI_API_KEY}"
         }
         
         payload = {
@@ -93,14 +134,24 @@ def main(req, res):
             "max_tokens": 2000
         }
 
-        response = requests.post("https://api.openai.com/v1/chat/completions", headers=headers, json=payload)
-        response_data = response.json()
+        print(f"Sending request to OpenAI API with payload: {json.dumps(payload)[:500]}...")
 
-        if 'error' in response_data:
-            return res.json({'error': response_data['error']}, 500)
+        response = requests.post(OPENAI_API_URL, headers=headers, json=payload)
+        print(f"Response status code: {response.status_code}")
         
-        # Extract JSON response
-        response_content = response_data['choices'][0]['message']['content']
+        if response.status_code != 200:
+            error_message = f"API request failed with status code {response.status_code}: {response.text}"
+            print(error_message)
+            return context.res.json({
+                "success": False,
+                "message": error_message
+            })
+        
+        print("Successfully received response from OpenAI API.")
+        
+        # Extract response data
+        response_json = response.json()
+        response_content = response_json['choices'][0]['message']['content']
 
         # Cleanup and parse JSON
         if "```json" in response_content:
@@ -116,7 +167,18 @@ def main(req, res):
         for analysis in analyses:
             analysis["confidence"] = 0.9
 
-        return res.json({'success': True, 'analyses': analyses})
+        print("Returning final JSON response.")
 
+        return context.res.json({
+            "success": True,
+            "analyses": analyses
+        })
+    
     except Exception as e:
-        return res.json({'error': str(e)}, 500)
+        print(f"Error: {str(e)}")
+        import traceback
+        traceback.print_exc()
+        return context.res.json({
+            "success": False,
+            "message": f"Unexpected error: {str(e)}"
+        })
