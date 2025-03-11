@@ -129,7 +129,7 @@ def main(context):
         }
         
         payload = {
-            "model": "gpt-4-vision-preview",
+            "model": "gpt-4o-mini",
             "messages": [{"role": "system", "content": system_prompt}, {"role": "user", "content": content}],
             "max_tokens": 2000
         }
