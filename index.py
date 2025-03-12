@@ -101,7 +101,8 @@ def main(context):
         4. Material (if visible, otherwise suggest the most likely material)
         5. Aesthetic/style (e.g., casual, formal, streetwear)
         6. Extra details (specific item or close alternative)
-
+        7. Item Name (The name of the item. If you don't know create an apt description that could be name. Format in Title Case. 
+        
         Format response as a JSON array with:
         {
             "type": "",
@@ -110,6 +111,7 @@ def main(context):
             "material": "",
             "aesthetic": "",
             "extra_details": "",
+            "item_name": "",
             "confidence": 0.0
         }
 
