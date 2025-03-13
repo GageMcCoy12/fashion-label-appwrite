@@ -107,6 +107,8 @@ def main(context):
         6. Extra details (specific item or close alternative)
         7. Item Name (The name of the clothing item. Format in Title Case. Specify the color of the item. Be specific with the shade of the color. Provide the official name for the product.)
 
+        For Item Name, if the item is vintage (and likely no longer sold, or able to be found on Amazon, please include that it is Vintage in the name.)
+        
         Format response as a JSON array with:
         {
             "type": "",
