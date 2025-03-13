@@ -101,7 +101,7 @@ def main(context):
         4. Material (if visible, otherwise suggest the most likely material)
         5. Aesthetic/style (e.g., casual, formal, streetwear)
         6. Extra details (specific item or close alternative)
-        7. Item Name (The name of the clothing item. Format in Title Case. If the item is ambiguous (could be any number of items) include the color at the front)
+        7. Item Name (The name of the clothing item. Format in Title Case. Specify color of the item. If I search the item name I should be able to find the exact item I want.)
         
         Format response as a JSON array with:
         {
