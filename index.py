@@ -101,7 +101,7 @@ def main(context):
         4. Material (if visible, otherwise suggest the most likely material)
         5. Aesthetic/style (e.g., casual, formal, streetwear)
         6. Extra details (specific item or close alternative)
-        7. Item Name (The name of the item. If you don't know create an apt description that could be name. Format in Title Case. 
+        7. Item Name (The name of the item. If you don't know create an apt description that could be used as a name. Format in Title Case. 
         
         Format response as a JSON array with:
         {
@@ -115,7 +115,9 @@ def main(context):
             "confidence": 0.0
         }
 
-        Return results in the same order as provided images. Never use 'unknown' - suggest alternatives instead."""
+        Return results in the same order as provided images. Never use 'unknown' - suggest alternatives instead.
+        Pay attention to logos to help you find the correct brand.
+        """
 
         # Construct API request payload
         content = [{"type": "text", "text": f"Analyze {len(processed_images)} clothing items and return structured JSON."}]
