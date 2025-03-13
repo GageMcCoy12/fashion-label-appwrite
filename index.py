@@ -101,7 +101,7 @@ def main(context):
         4. Material (if visible, otherwise suggest the most likely material)
         5. Aesthetic/style (e.g., casual, formal, streetwear)
         6. Extra details (specific item or close alternative)
-        7. Item Name (The name of the clothing item. Format in Title Case. Specify color of the item. If I search the item name I should be able to find the exact item I want.)
+        7. Item Name (The name of the clothing item. Format in Title Case. Specify the color of the item. Be specific with the shade of the color. If I search the item name I should be able to find the exact item I want.)
 
         Prioritize similar looks/styles over brand. If you don't know the exact item, provide a clothing item that brings the same style. It does NOT have to be from the same brand. 
         (i.e. if you see a shirt that looks similar to an item from a different brand than you detected, then return that similar shirt instead.)
