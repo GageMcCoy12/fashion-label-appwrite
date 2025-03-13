@@ -112,6 +112,8 @@ def main(context):
         7. Item Name (The specific name/title of the clothing item. Format in Title Case. Specify the color of the item. Be specific with the shade of the color. Provide the official name for the product.)
 
         For Item Name, if the item is vintage (and likely no longer sold, or able to be found on Amazon, please include that it is Vintage in the name.)
+
+        In Item Name, if the clothing item is different between Mens and Womens, specify which gendered type it is.
         
         If the item is vintage and likely not sold on Amazon, please include 'likely not on Amazon' inside the extra details section.
     
