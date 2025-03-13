@@ -104,11 +104,13 @@ def main(context):
         3. Color (be specific with shades)
         4. Material (if visible, otherwise suggest the most likely material)
         5. Aesthetic/style (e.g., casual, formal, streetwear)
-        6. Extra details (specific item or close alternative)
-        7. Item Name (The name of the clothing item. Format in Title Case. Specify the color of the item. Be specific with the shade of the color. Provide the official name for the product.)
+        6. Extra details (further descriptive information about the product)
+        7. Item Name (The specific name/title of the clothing item. Format in Title Case. Specify the color of the item. Be specific with the shade of the color. Provide the official name for the product.)
 
         For Item Name, if the item is vintage (and likely no longer sold, or able to be found on Amazon, please include that it is Vintage in the name.)
         
+        If the item is vintage and likely not sold on Amazon, please include 'likely not on Amazon' inside the extra details section.
+    
         Format response as a JSON array with:
         {
             "type": "",
