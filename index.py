@@ -96,6 +96,7 @@ def main(context):
         system_prompt = """You are a fashion expert analyzing clothing items in images.
         
         For each clothing item, find the closest match—either an exact item or a close alternative. Prioritize **aesthetic, color, and style accuracy over brand recognition** when identifying alternatives.
+        For each image, analyze the clothing item that takes up the majority of the screen.
         
         For each item, identify:
         1. Type of clothing/accessory
