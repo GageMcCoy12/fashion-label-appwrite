@@ -94,7 +94,10 @@ def main(context):
         processed_images = [encode_image(img) for img in images]
 
         system_prompt = """You are a fashion expert analyzing clothing items in images.
-        For each item, identify:
+        
+        For each item clothing item analyze it. Find a clothing item that is either an exact match, or a close alternative (in style, era, and color) for it.
+        
+        In each item identify:
         1. Type of clothing/accessory
         2. Brand (if visible or recognizable, otherwise suggest a similar brand)
         3. Color (be specific with shades)
@@ -102,9 +105,6 @@ def main(context):
         5. Aesthetic/style (e.g., casual, formal, streetwear)
         6. Extra details (specific item or close alternative)
         7. Item Name (The name of the clothing item. Format in Title Case. Specify the color of the item. Be specific with the shade of the color. If I search the item name I should be able to find the exact item I want.)
-
-        Prioritize similar looks/styles over brand. If you don't know the exact item, provide a clothing item that brings the same style. It does NOT have to be from the same brand. 
-        (i.e. if you see a shirt that looks similar to an item from a different brand than you detected, then return that similar shirt instead.)
 
         Format response as a JSON array with:
         {
@@ -119,8 +119,6 @@ def main(context):
         }
 
         Return results in the same order as provided images. Never use 'unknown' - suggest alternatives instead.
-        Pay attention to logos to help you find the correct brand.
-
         You are NOT allowed to return any thing as 'Unknown'. Take your best shot and give your best guess. NEVER MARK SOMETHING AS UNKNOWN.
         """
 
