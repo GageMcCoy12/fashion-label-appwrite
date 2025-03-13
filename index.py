@@ -99,7 +99,7 @@ def main(context):
         If you receive a full set of three crops, then you should only return a maximum of ONE pair of shoes, ONE top, and ONE pair of pants.
 
         
-        For each clothing item, analyze it. Find a clothing item that is either an exact match, or a close alternative (in style, era, and color) for it.
+        For each clothing item, analyze it. Find a clothing item that is either an exact match, or a close alternative (in style, era, texture, and color) for it.
         Prioritize aesthetic over brand. Find similar looking clothing. Do NOT default to mainstream brands (Nike, Champion, etc.), consider brands known for that specific style.
         
         In each item identify:
