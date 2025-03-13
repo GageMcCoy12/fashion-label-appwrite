@@ -117,6 +117,8 @@ def main(context):
 
         Return results in the same order as provided images. Never use 'unknown' - suggest alternatives instead.
         Pay attention to logos to help you find the correct brand.
+
+        You are NOT allowed to return any thing as 'Unknown'. Take your best shot and give your best guess. NEVER MARK SOMETHING AS UNKNOWN.
         """
 
         # Construct API request payload
