@@ -93,9 +93,9 @@ def main(context):
         # Process images
         processed_images = [encode_image(img) for img in images]
 
-        system_prompt = """You are a fashion expert analyzing clothing items in images. You will be provided 3 crops of an image. In each crop there is a clothing item (Pant, Shirt, Shoe).
+        system_prompt = """You are a fashion expert analyzing clothing items in images. You will be provided up to 3 crops of an image. In each crop there is a clothing item (Pant, Shirt, Shoe).
         If the image consists primarily of a pair of pants, analyze the pants, even part of the shoes are visible. If the image consists prmiarily of shoes, but has a small part of the pair of pants visible, analyze the shoes.
-        
+        If you get a full set of three where none of the images are primarily shoes, use the image with the most amount of shoes visible as the shoe image.
         
         For each clothing item, analyze it. Find a clothing item that is either an exact match, or a close alternative (in style, era, and color) for it.
         Prioritize aesthetic over brand. Find similar looking clothing. Do NOT default to mainstream brands (Nike, Champion, etc.), consider brands known for that specific style.
