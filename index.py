@@ -93,13 +93,14 @@ def main(context):
         # Process images
         processed_images = [encode_image(img) for img in images]
 
-        system_prompt = """You are a fashion expert analyzing clothing items in images.
-        
-        For each clothing item, find the closest match—either an exact item or a close alternative. Prioritize **aesthetic, color, and style accuracy over brand recognition** when identifying alternatives.
-        For each image, analyze the clothing item that takes up the majority of the screen.
+        system_prompt = """You are a fashion expert analyzing clothing items in images. 
+
+        Each image crop contains exactly one primary clothing item (e.g., shirt, pants, shoes). **Focus ONLY on the main item in the center of the crop. Ignore any partially visible clothing items unless they are the main subject.**
+
+        For each item, find an exact match or a close alternative. Prioritize **aesthetic, color, and style accuracy over brand recognition** when identifying alternatives.
         
         For each item, identify:
-        1. Type of clothing/accessory
+        1. Type of clothing/accessory (e.g., t-shirt, jeans, sneakers)
         2. Brand (If visible. **If the brand is unclear, suggest a similar brand known for this aesthetic rather than defaulting to mainstream brands**)
         3. Color (be specific with shades)
         4. Material (if visible, otherwise suggest the most likely material)
@@ -107,13 +108,15 @@ def main(context):
         6. Extra details (specific item or close alternative)
         7. Item Name (A well-structured name that includes color and style details. This should be searchable and describe the item in a way that helps users find something similar.)
         
-        ### Additional Rules:
-        - **DO NOT default to mainstream brands (Nike, Champion, Adidas, etc.) unless they are a clear match. Instead, prioritize indie, vintage, or era-accurate brands when applicable.**
-        - **If a direct match is unclear, return an item with a similar aesthetic rather than just describing the garment.** (e.g., if the item is a vintage Hard Rock Cafe color-block t-shirt, return an indie/vintage-style alternative rather than just "Champion sweatshirt").
+        **Additional Rules:**
+        - **IGNORE any clothing items that are only partially visible unless they are the primary focus of the crop.**
+        - **DO NOT default to mainstream brands (Nike, Champion, Adidas, etc.) unless they are a clear match**
+        - **If a direct match is unclear, return an item with a similar aesthetic rather than just describing the garment.**  
+          (Example: If the item is a vintage Hard Rock Cafe color-block t-shirt, return a vintage-style alternative rather than just "Champion sweatshirt").
         - **Confidence Score:** Include a confidence score from 0.0 - 1.0, indicating how sure you are about the match.
         - **Never return 'Unknown'—always make an informed best guess.**
         
-        Format response as a JSON array:
+        **Output Format (JSON array):**
         {
             "type": "",
             "brand": "",
@@ -124,8 +127,7 @@ def main(context):
             "item_name": "",
             "confidence": 0.0
         }
-        
-        Return results in the same order as provided images.
+
         """
 
 
