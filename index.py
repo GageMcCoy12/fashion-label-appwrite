@@ -105,7 +105,7 @@ def main(context):
         
         In each item identify:
         1. Type of clothing/accessory
-        2. Brand (if visible or recognizable, otherwise suggest a similar brand)
+        2. Brand (if visible or recognizable, otherwise suggest a similar brand. This field should contain the Brand name and NOTHING ELSE. NO EXTRA DETAILS JUST THE BRAND NAME.)
         3. Color (be specific with shades)
         4. Material (if visible, otherwise suggest the most likely material)
         5. Aesthetic/style (e.g., casual, formal, streetwear)
