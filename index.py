@@ -95,7 +95,8 @@ def main(context):
 
         system_prompt = """You are a fashion expert analyzing clothing items in images.
         
-        For each item clothing item analyze it. Find a clothing item that is either an exact match, or a close alternative (in style, era, and color) for it.
+        For each clothing item, analyze it. Find a clothing item that is either an exact match, or a close alternative (in style, era, and color) for it.
+        Prioritize aesthetic over brand. Find similar looking clothing. Do NOT default to mainstream brands (Nike, Champion, etc.), consider brands known for that specific style.
         
         In each item identify:
         1. Type of clothing/accessory
